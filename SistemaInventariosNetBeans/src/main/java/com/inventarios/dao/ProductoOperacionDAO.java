@@ -1,0 +1,6 @@
+package com.inventarios.dao;
+import com.inventarios.conexion.Conexion; import com.inventarios.modelo.Producto; import java.sql.*; import java.util.*;
+public class ProductoOperacionDAO {
+ public List<Producto> listar(){List<Producto> l=new ArrayList<>();String s="SELECT p.*,c.nombre nombre_categoria,pr.razon_social nombre_proveedor FROM producto p JOIN categoria c ON p.id_categoria=c.id_categoria JOIN proveedor pr ON p.id_proveedor=pr.id_proveedor WHERE p.estado=1 ORDER BY p.nombre";
+ try(Connection c=Conexion.conectar();PreparedStatement p=c.prepareStatement(s);ResultSet r=p.executeQuery()){while(r.next()){Producto x=new Producto();x.setIdProducto(r.getInt("id_producto"));x.setCodigo(r.getString("codigo"));x.setNombre(r.getString("nombre"));x.setDescripcion(r.getString("descripcion"));x.setIdCategoria(r.getInt("id_categoria"));x.setNombreCategoria(r.getString("nombre_categoria"));x.setIdProveedor(r.getInt("id_proveedor"));x.setNombreProveedor(r.getString("nombre_proveedor"));x.setUnidadMedida(r.getString("unidad_medida"));x.setPrecioCompra(r.getDouble("precio_compra"));x.setPrecioVenta(r.getDouble("precio_venta"));x.setStock(r.getInt("stock"));x.setStockMinimo(r.getInt("stock_minimo"));x.setStockMaximo(r.getInt("stock_maximo"));l.add(x);}}catch(SQLException e){System.err.println(e.getMessage());}return l;}
+}
