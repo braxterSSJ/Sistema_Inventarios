@@ -464,6 +464,25 @@ private void nuevoUsuario() {
     // GUARDAR
     // =========================================================
 
+    private void mostrarAdvertencia(String mensaje) {
+        JOptionPane.showMessageDialog(
+                this,
+                mensaje,
+                "Validación",
+                JOptionPane.WARNING_MESSAGE
+        );
+    }
+
+    private boolean validarCamposObligatorios(String mensaje, String... campos) {
+        for (String campo : campos) {
+            if (campo.isEmpty()) {
+                mostrarAdvertencia(mensaje);
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void guardarUsuario() {
 
         if (idUsuarioSeleccionado != 0) {
@@ -492,17 +511,9 @@ private void nuevoUsuario() {
                         txtPassword.getPassword()
                 );
 
-        if (usuario.isEmpty()
-                || nombre.isEmpty()
-                || password.isEmpty()) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Complete usuario, nombre y contraseña.",
-                    "Validación",
-                    JOptionPane.WARNING_MESSAGE
-            );
-
+        if (!validarCamposObligatorios(
+                "Complete usuario, nombre y contraseña.",
+                usuario, nombre, password)) {
             return;
         }
 
@@ -582,16 +593,9 @@ private void nuevoUsuario() {
         String correo =
                 txtCorreo.getText().trim();
 
-        if (usuario.isEmpty()
-                || nombre.isEmpty()) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Complete usuario y nombre completo.",
-                    "Validación",
-                    JOptionPane.WARNING_MESSAGE
-            );
-
+        if (!validarCamposObligatorios(
+                "Complete usuario y nombre completo.",
+                usuario, nombre)) {
             return;
         }
 
